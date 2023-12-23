@@ -1,0 +1,699 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <title>MTG Card Helper</title>
+        <style>
+/* all */
+body{
+    background-color: #272727;
+}
+div{
+    border: 2px solid #ffffff;
+    border-radius: 8px;
+}
+        </style>
+        <style>
+/* div */
+div#container{
+    border: none;
+    display: flex;
+}
+/* cardListArea */
+div#cardListArea{
+    margin: 16px;
+    flex: 0 0 320px;
+}
+/* console */
+div#console{
+    flex: 1 1 100px;
+    margin: 16px;
+    margin-left: 0px;
+    min-width: 756px;
+}
+div#console>div{
+    margin: 4px;
+}
+div#console>div>div{
+    margin: 4px;
+    border: none;
+}
+/* apiArea */
+div#apiArea{
+    height: 48px;
+    border: none;
+    border-bottom: 1px solid #ffffff;
+    border-radius: 0px;
+}
+/* control */
+div#control{
+    display: flex;
+    border: 0px;
+}
+div#cardLangArea{
+    height: 48px;
+    flex: 3 1 100px;
+}
+div#controlButton{
+    height: 48px;
+    flex: 4 1 100px;
+}
+/* result */
+div#result{
+    height: 550px;
+    border: none;
+    border-top: 1px solid #ffffff;
+    border-radius: 0px;
+}
+        </style>
+        <style>
+/* textarea */
+textarea{
+    border: none;
+    background: url();
+    color: #ffffff;
+    font-size: 1em;
+    resize: none;
+}
+textarea#scryfallApi{
+    margin: 4px 6px;
+    width: 95%;
+    height: 32px;
+    font-size: 1.4em;
+    line-height: 32px;
+}
+textarea#cardList{
+    margin: 14px;
+    width: 90%;
+    height: 640px;
+    font-size: 1.2em;
+}
+textarea#cardLang{
+    margin: 5px 4px;
+    width: 96%;
+}
+        </style>
+        <style>
+/* button */
+button{
+    border-radius: 4px;
+    font-size: 1.2em;
+    color: #93b5cf;
+    border: 1px solid #93b5cf;
+    background: url();
+    width: 99%;
+    height: 100%;
+}
+button:hover{
+    transition: all 0.5s;
+    background-color: #93b5cf;
+    color: #ffffff;
+}
+        </style>
+        <style>
+/* #result>div */
+div#tableTitle{
+    display: flex;
+}
+div#tableTitle>div{
+    color: #ffffff;
+    margin: 4px;
+    border: none;
+}
+#allChecked{
+    width: 16px;
+    height: 16px;
+    margin: 4px;
+}
+div#resultList{
+    height: 500px;
+}
+.Titlename{
+    flex: 5 1 100px;
+    font-size: 1.1em;
+}
+.Titlehastoken{
+    flex: 1 1 100px;
+    font-size: 1.1em;
+}
+.Titlelang{
+    flex: 1 1 100px;
+    font-size: 1.1em;
+}
+.Titlebutton{
+    flex: 2 1 100px;
+    font-size: 1.1em;
+}
+.normalButton{
+    font-size: 1em;
+    height: 30px;
+}
+        </style>
+        <style>
+/* result>ul */
+ul#resultUL{
+    height: 99%;
+    list-style: none;
+    overflow: auto;
+    margin-left: -40px;
+}
+ul#resultUL>li>div{
+    border: none;
+}
+.singleResult{
+    display: flex;
+}
+.singleResult>div{
+    color: #ffffff;
+    margin: 4px;
+    border: none;
+}
+.checkedBox{
+    width: 16px;
+    height: 16px;
+}
+a{
+    color: #ffffff;
+    text-decoration: none;
+}
+a:hover{
+    transition: all 0.5s;
+    color: #93b5cf;
+}
+        </style>
+        <style>
+/* alert */
+.alertBack{
+    position: absolute;
+    z-index: 1;
+    top: 10px;
+    width: 99%;
+    min-width: 1130px;
+    height: 710px;
+    border: none;
+    background-color: #000000;
+    opacity: 0.7;
+}
+.dialogueX{
+    float: right;
+    width: 30px;
+    height: 30px;
+    border: none;
+    margin: 3px;
+}
+.alertDialogue{
+    position: absolute;
+    z-index: 2;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 500px;
+    height: 309px;
+    background-color: #272727;
+}
+.alertText{
+    width: 375px;
+    height: 231.75px;
+    margin: auto;
+    margin-top: 38.625px;
+    text-align: center;
+    line-height: 231.75px;
+    border: none;
+}
+.bling{
+    border: none;
+    color: #ffffff;
+    font-size: 2em;
+    user-select: none;
+    animation-name: bling-animation;
+    animation-duration: 2s;
+    animation-iteration-count: infinite;
+}
+.notbling{
+    border: none;
+    color: #ffffff;
+    font-size: 2em;
+    user-select: none;
+}
+        </style>
+        <style>
+/* preview */
+.previewDialogue{
+    position: absolute;
+    z-index: 2;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 1280px;
+    height: 640px;
+    background-color: #272727;
+    border-bottom-left-radius: 0px;
+    border-bottom-right-radius: 0px;
+}
+.previewPNG{
+    height: 500px;
+    margin: 0px 24px;
+}
+#previewUL{
+    display: flex;
+    height: 570px;
+    margin-top: 70px;
+    list-style: none;
+    overflow-x: auto;
+}
+#previewUL>li{
+    display: inline-block;
+}
+        </style>
+        <style>
+/* animation */
+@keyframes bling-animation{
+    0%{
+        color: #ffffff;
+    }
+    50%{
+        color: #93b5cf;
+    }
+    100%{
+        color: #ffffff;
+    }
+}
+        </style>
+        <script type="text/javascript">
+var scryfallApi = ""    //scyfall的api地址
+var langList = []       //语言列表
+var cardList = []       //卡片列表
+
+var cardImgUrisArr = []
+//卡片图片Uri数组
+// cardImgUrisArr = [
+//     {
+//         "UUID": (UUID),
+//         "data": (str[(uri_str)])
+//     },
+//     ...
+// ]
+
+window.onload = function(){
+    refreshTextarea();
+}
+        </script>
+        <script type="text/javascript">
+// sleep 函数--Promise 版本
+function sleep(time) {
+    return new Promise((resolve) => {
+        setTimeout(() => {
+            resolve();
+        }, time);
+    });
+}
+        </script>
+        <script type="text/javascript">
+// 刷新textarea  将数据保存到变量 scryfallApi langList cardList
+function refreshTextarea(){
+    scryfallApi = document.getElementById("scryfallApi").value;
+    langList = [];
+    cardList = [];
+    var tempCardList = document.getElementById("cardList").value;
+    var tempCardLine = "";
+    tempCardList = tempCardList.replace(/[0-9]+[ ]/g, "");
+    tempCardList = tempCardList.replace(/\n\n/g, "\n");
+    for(i in tempCardList){
+        if(tempCardList[i]!="\n"){
+            tempCardLine += tempCardList[i];
+        }else{
+            cardList.push(tempCardLine);
+            tempCardLine = "";
+        }
+        if(i==tempCardList.length-1&&tempCardList[i]!="\n"){
+            cardList.push(tempCardLine);
+            tempCardLine = "";
+        }
+    }
+    var tempLangList = document.getElementById("cardLang").value;
+    var tempLangLine = ""
+    for(i in tempLangList){
+        if(tempLangList[i]!=","){
+            tempLangLine += tempLangList[i];
+        }else{
+            langList.push(tempLangLine);
+            tempLangLine = "";
+        }
+        if(i==tempLangList.length-1&&tempLangList[i]!=","){
+            langList.push(tempLangLine);
+            tempLangLine = "";
+        }
+    }
+}
+        </script>
+        <script type="text/javascript">
+// 创建弹窗  alertEvent=(enum)["searching", "copied"](searching=正在搜索 copied=已复制)  addtionText=附加文本
+function createAlert(alertEvent, addtionText){
+    var bodyElement = document.querySelector("body");
+    var addAlertBack = document.createElement("div");
+    var addAlertDialogue = document.createElement("div");
+    var addDialogueX = document.createElement("div");
+    var addButtonX = document.createElement("button");
+    var addAlertText = document.createElement("div");
+    var addBling = document.createElement("div");
+
+    addAlertBack.className = "alertBack";
+    addAlertDialogue.className = "alertDialogue";
+    addDialogueX.className = "dialogueX";
+    addButtonX.setAttribute("onclick", "removeAlert()");
+    addButtonX.innerHTML = "X";
+    addButtonX.style.display = ((alertEvent=="searching") ? "none" : "initial");
+    addAlertText.className = "alertText";
+    addBling.className = ((alertEvent=="searching") ? "bling" : "notbling");
+    addBling.innerHTML = addtionText;
+    
+    bodyElement.appendChild(addAlertBack);
+    bodyElement.appendChild(addAlertDialogue);
+    addAlertDialogue.appendChild(addDialogueX);
+    addDialogueX.appendChild(addButtonX);
+    addAlertDialogue.appendChild(addAlertText);
+    addAlertText.appendChild(addBling);
+}
+// 修改弹窗  addtionText=附加文本  blingstatus=文本是否闪烁  buttonXVisible=关闭按钮是否可见
+function changeAlert(addtionText, blingStatus, buttonXVisible){
+    document.querySelector("div[class='alertText']").firstChild.className = (blingStatus ? "bling" : "notbling");
+    document.querySelector("div[class='alertText']").firstChild.innerHTML = addtionText;
+    document.querySelector("div[class='dialogueX']").firstChild.style.display = (buttonXVisible ? "initial" : "none");
+}
+// 移除弹窗
+function removeAlert(){
+    document.querySelector("div[class='alertBack']").remove();
+    document.querySelector("div[class='alertDialogue']").remove();
+}
+        </script>
+        <script type="text/javascript">
+// 创建单个搜索结果  scryfallUri=卡片的scryfall地址  cardUUID=卡片UUID  cardName=卡片名称  cardLang=卡片语言  cardHasToken=卡片是否拥有衍生物
+function createResult(scryfallUri, cardUUID, cardName, cardLang, cardHasToken){
+    var resultUL = document.getElementById("resultUL");
+    var addResultLI = document.createElement("li");
+    var addSingleResultDiv = document.createElement("div");
+    var addCheckBoxDiv = document.createElement("div");
+    var addCheckBox = document.createElement("input");
+    var addTitlenameDiv = document.createElement("div");
+    var addTitlenameA = document.createElement("a");
+    var addTitlelangDiv = document.createElement("div");
+    var addTitlehastokenDiv = document.createElement("div");
+    var addTitlebuttonDiv = document.createElement("div");
+    var addButtonPreview = document.createElement("button");
+
+    addResultLI.id = cardUUID;
+    addSingleResultDiv.className = "singleResult";
+    addCheckBox.type = "checkbox";
+    addCheckBox.className = "checkedBox";
+    addCheckBox.value = cardUUID;
+    addTitlenameDiv.className = "Titlename";
+    addTitlenameA.href = scryfallUri;
+    addTitlenameA.target = "_blank";
+    addTitlenameA.innerHTML = cardName;
+    addTitlelangDiv.className = "Titlelang";
+    addTitlelangDiv.innerHTML = cardLang;
+    addTitlehastokenDiv.className = "Titlehastoken";
+    addTitlehastokenDiv.innerHTML = cardHasToken;
+    addTitlebuttonDiv.className = "Titlebutton";
+    addButtonPreview.className = "normalButton";
+    addButtonPreview.setAttribute("onclick", "previewCard('"+cardUUID+"')");
+    addButtonPreview.innerHTML = "previewCard";
+
+    resultUL.appendChild(addResultLI);
+    addResultLI.appendChild(addSingleResultDiv);
+    addSingleResultDiv.appendChild(addCheckBoxDiv);
+    addSingleResultDiv.appendChild(addTitlenameDiv);
+    addSingleResultDiv.appendChild(addTitlelangDiv);
+    addSingleResultDiv.appendChild(addTitlehastokenDiv);
+    addSingleResultDiv.appendChild(addTitlebuttonDiv);
+    addCheckBoxDiv.appendChild(addCheckBox);
+    addTitlenameDiv.appendChild(addTitlenameA);
+    addTitlebuttonDiv.appendChild(addButtonPreview);
+}
+        </script>
+        <script type="text/javascript">
+// 添加衍生物的图片uri到指定卡片的uri列表  JSONobj=衍生物的JSONobj  cardUUID=要添加到卡片uri列表的UUID
+function addToken(JSONobj, cardUUID){
+    for(i in cardImgUrisArr){
+        if(cardImgUrisArr[i]["UUID"]==cardUUID){
+            if("card_faces" in JSONobj){
+                for(j in JSONobj["card_faces"]){
+                    cardImgUrisArr[i]["data"].push(JSONobj["card_faces"][j]["image_uris"]["png"]);
+                }
+            }else{
+                cardImgUrisArr[i]["data"].push(JSONobj["image_uris"]["png"]);
+            }
+            break;
+        }
+    }
+}
+        </script>
+        <script type="text/javascript">
+// 根据uri获取衍生物的JSONobj  getUri=获取地址  cardUUID=要添加到卡片uri列表的UUID
+function getToken(getUri, cardUUID){
+    var httpRequest = new XMLHttpRequest();
+    httpRequest.open("GET", getUri, "true");
+    httpRequest.send();
+    httpRequest.onreadystatechange = function(){
+        if(httpRequest.readyState==4){
+            var requestText = httpRequest.responseText;
+            var JSONobj = JSON.parse(requestText);
+            addToken(JSONobj, cardUUID);
+        }
+    }
+}
+        </script>
+        <script type="text/javascript">
+// 分析获取到的卡片JSONobj  JSONobj=卡片的JSONobj  getName=申请搜索的卡片名称
+function analysisGet(JSONobj, getName){
+    if(JSONobj["object"]=="list"){
+        for(i in JSONobj["data"]){
+            JSONobj["data"][i]["name"] = JSONobj["data"][i]["name"].split(" // ", 1);
+            if(JSONobj["data"][i]["name"]==getName){
+                var cardUUID = JSONobj["data"][i]["id"];
+                for(j in cardImgUrisArr){
+                    if(cardImgUrisArr[j]["UUID"]==cardUUID){
+                        var result = true;
+                    }
+                }
+                if(result){
+                    break;
+                }
+                var scryfallUri = JSONobj["data"][i]["scryfall_uri"];
+                var cardName = getName;
+                var cardLang = JSONobj["data"][i]["lang"];
+                var cardHasToken = false;
+                var cardImgUris = [];
+                if("card_faces" in JSONobj["data"][i]){
+                    for(j in JSONobj["data"][i]["card_faces"]){
+                        cardImgUris.push(JSONobj["data"][i]["card_faces"][j]["image_uris"]["png"]);
+                    }
+                }else{
+                    cardImgUris.push(JSONobj["data"][i]["image_uris"]["png"]);
+                }
+                var addCardInfo = {
+                    "UUID": cardUUID,
+                    "data": cardImgUris
+                }
+                cardImgUrisArr.push(addCardInfo);
+                if("all_parts" in JSONobj["data"][i]){
+                    for(j in JSONobj["data"][i]["all_parts"]){
+                        if(JSONobj["data"][i]["all_parts"][j]["component"]=="token"){
+                            cardHasToken = true;
+                            break;
+                        }
+                    }
+                }
+                createResult(scryfallUri, cardUUID, cardName, cardLang, cardHasToken);
+                if("all_parts" in JSONobj["data"][i]){
+                    for(j in JSONobj["data"][i]["all_parts"]){
+                        if(JSONobj["data"][i]["all_parts"][j]["component"]=="token"){
+                            var tokenUri = JSONobj["data"][i]["all_parts"][j]["uri"];
+                            getToken(tokenUri, cardUUID);
+                        }
+                    }
+                }
+                break;
+            }
+        }
+    }else{
+        console.log("[Error] "+getName);
+        console.log(JSONobj);
+    }
+}
+        </script>
+        <script type="text/javascript">
+// 尝试获取卡片JSONobj  getUri=获取地址  getName=申请搜索的卡片名称
+function tryGet(getUri, getName){
+    var httpRequest = new XMLHttpRequest();
+    httpRequest.open("GET", getUri, "true");
+    httpRequest.send();
+    httpRequest.onreadystatechange = function(){
+        if(httpRequest.readyState==4){
+            var requestText = httpRequest.responseText;
+            var JSONobj = JSON.parse(requestText);
+            analysisGet(JSONobj, getName);
+        }
+    }
+}
+        </script>
+        <script type="text/javascript">
+// 搜索卡片按钮
+async function searchCard(){
+    refreshTextarea();
+    createAlert("searching", "Searching~Please wait.");
+    for(i in cardList){
+        for(j in langList){
+            var searchUri = scryfallApi + "search?q=lang%3A" + langList[j] + "+" + cardList[i];
+            tryGet(searchUri, cardList[i]);
+            await sleep(256);
+        }
+    }
+    changeAlert("Search complete!", false, true);
+}
+        </script>
+        <script type="text/javascript">
+// 全选复选框改变时
+function allCheckedChange(){
+    var allChecked = document.getElementById("allChecked");
+    var allCheckbox = document.querySelectorAll("input[type='checkbox']");
+    for(i in allCheckbox){
+        allCheckbox[i].checked = allChecked.checked;
+    }
+}
+        </script>
+        <script type="text/javascript">
+// 复制选中链接按钮
+function copySelected(){
+    var allClip = "";
+    var allCheckbox = document.querySelectorAll("input[type='checkbox']");
+    var allCheckedR = [];
+    for(i in allCheckbox){
+        if(allCheckbox[i].checked&&allCheckbox[i].id!="allChecked"){
+            allCheckedR.push(allCheckbox[i]);
+        }
+    }
+    for(i in allCheckedR){
+        for(j in cardImgUrisArr){
+            if(cardImgUrisArr[j]["UUID"]==allCheckedR[i].value){
+                for(k in cardImgUrisArr[j]["data"]){
+                    allClip += cardImgUrisArr[j]["data"][k] + "\n";
+                }
+                break;
+            }
+        }
+    }
+    navigator.clipboard.writeText(allClip);
+    createAlert("copied", "Selected link copied.")
+}
+        </script>
+        <script type="text/javascript">
+// 创建预览会话  imgUris=要预览的图片uri地址
+function createPreviewDialogue(imgUris){
+    var bodyEle = document.querySelector("body");
+    var addAlertBack = document.createElement("div");
+    var addPreviewDialogue = document.createElement("div");
+    var addDialogueX = document.createElement("div");
+    var addButtonX = document.createElement("button");
+
+    addAlertBack.className = "alertBack";
+    addPreviewDialogue.className = "previewDialogue";
+    addDialogueX.className = "dialogueX";
+    addButtonX.setAttribute("onclick", "removePreviewDialogue()");
+    addButtonX.innerHTML = "X";
+
+    bodyEle.appendChild(addAlertBack);
+    bodyEle.appendChild(addPreviewDialogue);
+    addPreviewDialogue.appendChild(addDialogueX);
+    addDialogueX.appendChild(addButtonX);
+
+    var addPreviewUL = document.createElement("ul");
+    addPreviewUL.id = "previewUL";
+    for(i in imgUris){
+        var addLI = document.createElement("li");
+        var addImg = document.createElement("img");
+        addImg.className = "previewPNG";
+        addImg.alt = imgUris[i];
+        addImg.src = imgUris[i];
+        addPreviewUL.appendChild(addLI);
+        addLI.appendChild(addImg);
+    }
+    addPreviewDialogue.appendChild(addPreviewUL);
+}
+// 移除预览会话
+function removePreviewDialogue(){
+    document.querySelector("div[class='alertBack']").remove();
+    document.querySelector("div[class='previewDialogue']").remove();
+}
+        </script>
+        <script type="text/javascript">
+// 预览卡片按钮  cardUUID=卡片UUID
+function previewCard(cardUUID){
+    for(i in cardImgUrisArr){
+        if(cardImgUrisArr[i]["UUID"]==cardUUID){
+            createPreviewDialogue(cardImgUrisArr[i]["data"]);
+            break;
+        }
+    }
+}
+        </script>
+    </head>
+    <body>
+        <div id="container">
+            <div id="cardListArea">
+                <textarea id="cardList" placeholder="Please paste the deck list here.&#13;Support MTGA format."></textarea>
+            </div>
+            <div id="console">
+                <div id="apiArea">
+                    <textarea id="scryfallApi">https://api.scryfall.com/cards/</textarea>
+                </div>
+                <div id="control">
+                    <div id="cardLangArea">
+                        <textarea id="cardLang" placeholder="Please enter the Languages Code here.&#13;For details, please refer to My GitHub page."></textarea>
+                    </div>
+                    <div id="controlButton">
+                        <button id="searchCard" onclick="searchCard()">searchCard</button>
+                    </div>
+                </div>
+                <div id="result">
+                    <div id="tableTitle">
+                        <div id="checkBoxArea"><input type="checkbox" id="allChecked" onclick="allCheckedChange()"></div>
+                        <div class="Titlename">cardName</div>
+                        <div class="Titlelang">Language</div>
+                        <div class="Titlehastoken">hasToken</div>
+                        <div class="Titlebutton">
+                            <button id="copyLink" class="normalButton" onclick="copySelected()">copySelected</button>
+                        </div>
+                    </div>
+                    <div id="resultList">
+                        <ul id="resultUL">
+                            <!-- Sample -->
+                            <!-- <li id="(UUID)"><div class="singleResult">
+                                    <div><input type="checkbox" class="checkedBox" value="(UUID)"></div>
+                                    <div class="Titlename"><a href="(uri_str)" target="_blank">Scryfall</a></div>
+                                    <div class="Titlelang">en</div>
+                                    <div class="Titlehastoken">true</div>
+                                    <div class="Titlebutton"><button class="normalButton" onclick="previewCard(UUID)">previewCard</button></div>
+                            </div></li> -->
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Sample -->
+        <!-- <div class="alertBack"></div> -->
+        <!-- <div class="alertDialogue">
+            <div class="dialogueX"><button onclick="removeAlert()">X</button></div>
+            <div class="alertText"><div class="bling">Searching~Please wait.</div></div>
+        </div> -->
+        <!-- <div class="previewDialogue">
+            <div class="dialogueX"><button onclick="removePreviewDialogue()">X</button></div>
+            <ul id="previewUL">
+                <li><img class="previewPNG" src="(uri_str)"></li>
+                <li><img class="previewPNG" src="(uri_str)"></li>
+                <li><img class="previewPNG" src="(uri_str)"></li>
+                <li><img class="previewPNG" src="(uri_str)"></li>
+            </ul>
+        </div> -->
+    </body>
+</html>
