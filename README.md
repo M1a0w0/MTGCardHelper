@@ -19,7 +19,8 @@ pip install -r requirements.txt
 - Before you run `downloadCardImg_V2.py`, change the path variable on `line 31` `line 32`
 
 ## MTG Card Helper.html
-#### It provides a GUI that can make you more easily to use. It can be used as long as you have a browser(recommend Microsoft Edge).
+#### It provides a GUI that can make you more easily to use. It can be used as long as you have a browser.
+- It is test on Microsoft Edge.
 ### Usage
 - Just download this file, then open it on your browser.
 ### Details
@@ -28,9 +29,10 @@ pip install -r requirements.txt
 - After fill in `deck list` and `Languages Code`, click `searchCard`.
 - About the checkbox before title `cardName`, it can select all result.
 - About the button `copySelected`, it can copy all selected result's card image uri to your clipboard.
-- `hasToken` = true means this card has token.
+- `hasToken = true` means this card has token.
 - Click card's name, it can jump to this card's scryfall page.
 - About the button `previewCard`, it can show you image about this card.
+- About the image you preview, it is full png, you can save it directly without worrying about clarity.
 
 ## License
 See the `LICENSE` file for details. In summary, MTGCardHelper is licensed under the `MIT license`.
