@@ -20,7 +20,7 @@ pip install -r requirements.txt
 
 ## MTG Card Helper.html
 #### It provides a GUI that can make you more easily to use. It can be used as long as you have a browser.
-- It is test on Microsoft Edge.
+- It is test on `Microsoft Edge`.
 ### Usage
 - Just download this file, then open it on your browser.
 ### Details
